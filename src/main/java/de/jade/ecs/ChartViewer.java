@@ -160,6 +160,7 @@ public class ChartViewer implements ChartContext {
 	/**
 	 * LinePainter
 	 * 
+	 * @author Martin Steiger
 	 *
 	 */
 	public class LinePainter implements Painter<JXMapViewer> {
