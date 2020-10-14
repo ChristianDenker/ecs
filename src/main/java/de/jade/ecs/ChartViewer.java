@@ -39,7 +39,8 @@ import s57.S57map.Snode;
 import s57.S57obj.Obj;
 import symbols.Symbols;
 
-/** ChartViewer based on JXMapviewer2
+/**
+ * ChartViewer based on JXMapviewer2
  * 
  * @author chris
  *
@@ -156,7 +157,7 @@ public class ChartViewer implements ChartContext {
 
 		return linePainter;
 	}
-	
+
 	/**
 	 * removes the given PolygonPainter from the paintersList
 	 * 
@@ -167,8 +168,8 @@ public class ChartViewer implements ChartContext {
 	}
 
 	/**
-	 * adds a the {@link PolygonPainter} for the given Geometry to the paintersList and returns
-	 * it
+	 * adds a the {@link PolygonPainter} for the given Geometry to the paintersList
+	 * and returns it
 	 * 
 	 * @param geo
 	 * @return
@@ -176,14 +177,14 @@ public class ChartViewer implements ChartContext {
 	public PolygonPainter addPolygonPainter(Geometry geo) {
 		List<GeoPosition> track = new ArrayList<>();
 		Arrays.asList(geo.getCoordinates()).forEach(c -> track.add(new GeoPosition(c.getY(), c.getX())));
-		PolygonPainter echoPainter = new PolygonPainter(track);
+		PolygonPainter polygonPainter = new PolygonPainter(track);
 
-		paintersList.add(echoPainter);
+		paintersList.add(polygonPainter);
 		painter = new CompoundPainter<JXMapViewer>(paintersList);
 		mapViewer.setOverlayPainter(painter);
 		mapViewer.updateUI();
 
-		return echoPainter;
+		return polygonPainter;
 	}
 
 	/**
