@@ -158,22 +158,22 @@ public class ChartViewer implements ChartContext {
 	}
 	
 	/**
-	 * removes the given EchoPainter from the paintersList
+	 * removes the given PolygonPainter from the paintersList
 	 * 
 	 * @param painter
 	 */
-	public void removeEchoPainter(PolygonPainter painter) {
+	public void removePolygonPainter(PolygonPainter painter) {
 		paintersList.remove(painter);
 	}
 
 	/**
-	 * adds a the EchoPainter for the given Geometry to the paintersList and returns
+	 * adds a the {@link PolygonPainter} for the given Geometry to the paintersList and returns
 	 * it
 	 * 
 	 * @param geo
 	 * @return
 	 */
-	public PolygonPainter addEchoPainter(Geometry geo) {
+	public PolygonPainter addPolygonPainter(Geometry geo) {
 		List<GeoPosition> track = new ArrayList<>();
 		Arrays.asList(geo.getCoordinates()).forEach(c -> track.add(new GeoPosition(c.getY(), c.getX())));
 		PolygonPainter echoPainter = new PolygonPainter(track);
