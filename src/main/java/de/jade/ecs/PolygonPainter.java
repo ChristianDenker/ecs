@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jxmapviewer.JXMapViewer;
@@ -31,7 +32,7 @@ public class PolygonPainter implements Painter<JXMapViewer> {
 	public PolygonPainter(List<GeoPosition> track) {
 		// copy the list so that changes in the
 		// original list do not have an effect here
-		this.track = new ArrayList<GeoPosition>(track);
+		this.track = Collections.synchronizedList(new ArrayList<GeoPosition>(track));
 	}
 
 	@Override
@@ -63,11 +64,13 @@ public class PolygonPainter implements Painter<JXMapViewer> {
 		int[] xpoints = new int[track.size()];
 		int[] ypoints = new int[track.size()];
 
-		for (int i = 0; i < track.size(); i++) {
-			// convert geo-coordinate to world bitmap pixel
-			Point2D pt = map.getTileFactory().geoToPixel(track.get(i), map.getZoom());
-			xpoints[i] = (int) pt.getX();
-			ypoints[i] = (int) pt.getY();
+		synchronized (track) {
+			for (int i = 0; i < track.size(); i++) {
+				// convert geo-coordinate to world bitmap pixel
+				Point2D pt = map.getTileFactory().geoToPixel(track.get(i), map.getZoom());
+				xpoints[i] = (int) pt.getX();
+				ypoints[i] = (int) pt.getY();
+			}
 		}
 
 		Polygon polygonAWT = new Polygon(xpoints, ypoints, track.size());

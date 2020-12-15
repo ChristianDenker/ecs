@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -205,7 +206,7 @@ public class ChartViewer implements ChartContext {
 		public LinePainter(List<GeoPosition> track) {
 			// copy the list so that changes in the
 			// original list do not have an effect here
-			this.track = new ArrayList<GeoPosition>(track);
+			this.track = Collections.synchronizedList(new ArrayList<GeoPosition>(track));
 		}
 
 		@Override
@@ -244,18 +245,20 @@ public class ChartViewer implements ChartContext {
 
 			boolean first = true;
 
-			for (GeoPosition gp : track) {
-				// convert geo-coordinate to world bitmap pixel
-				Point2D pt = map.getTileFactory().geoToPixel(gp, map.getZoom());
+			synchronized (track) {
+				for (GeoPosition gp : track) {
+					// convert geo-coordinate to world bitmap pixel
+					Point2D pt = map.getTileFactory().geoToPixel(gp, map.getZoom());
 
-				if (first) {
-					first = false;
-				} else {
-					g.drawLine(lastX, lastY, (int) pt.getX(), (int) pt.getY());
+					if (first) {
+						first = false;
+					} else {
+						g.drawLine(lastX, lastY, (int) pt.getX(), (int) pt.getY());
+					}
+
+					lastX = (int) pt.getX();
+					lastY = (int) pt.getY();
 				}
-
-				lastX = (int) pt.getX();
-				lastY = (int) pt.getY();
 			}
 		}
 	}
