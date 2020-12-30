@@ -1,4 +1,4 @@
-package de.jade.ecs;
+package de.jade.ecs.map;
 
 import java.io.FileInputStream;
 
@@ -13,7 +13,8 @@ public class Application {
 			S57dec.decodeChart(in, s57map);
 //			ArrayList<Feature> list = s57map.features.get(Obj.SOUNDG);
 			ChartViewer chartViewer = new ChartViewer();
-			chartViewer.addSeachart(s57map);
+			chartViewer.show();
+//			chartViewer.addSeachart(s57map);
 
 		} catch (Exception e) {
 			e.printStackTrace();

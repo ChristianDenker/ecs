@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="routeStackPane" prefHeight="300.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.jade.ecs.RouteManagerController">
+	<children>
+		<GridPane fx:id="routeOverviewGrid" prefHeight="194.0" prefWidth="200.0">
+
+			<columnConstraints>
+				<ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="50.0" prefWidth="50.0" />
+				<ColumnConstraints hgrow="ALWAYS" minWidth="50.0" prefWidth="150.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<VBox alignment="BASELINE_CENTER">
+					<children>
+						<Button fx:id="newRouteButton" mnemonicParsing="false" text="New" />
+					</children>
+					<opaqueInsets>
+						<Insets />
+					</opaqueInsets>
+				</VBox>
+				<ListView fx:id="routeListView" GridPane.columnIndex="1" />
+
+
+			</children>
+		</GridPane>
+		<GridPane fx:id="routeCreateGrid">
+			<columnConstraints>
+				<ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="50.0" prefWidth="50.0" />
+				<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="150.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+			</rowConstraints>
+			<children>
+				<VBox alignment="BASELINE_CENTER" prefHeight="200.0" prefWidth="100.0">
+					<children>
+						<Button fx:id="saveRouteButton" mnemonicParsing="false" text="Save" />
+					</children>
+				</VBox>
+				<VBox spacing="5.0" GridPane.columnIndex="1" GridPane.valignment="TOP">
+					<children>
+						<HBox prefHeight="100.0" prefWidth="200.0">
+							<children>
+								<Label minWidth="-Infinity" text="Name:">
+									<HBox.margin>
+										<Insets left="5.0" top="14.0" />
+									</HBox.margin>
+								</Label>
+								<TextField fx:id="routeName" prefWidth="100.0" promptText="routeName" style="">
+									<HBox.margin>
+										<Insets bottom="5.0" left="5.0" right="10.0" top="10.0" />
+									</HBox.margin>
+								</TextField>
+							</children>
+						</HBox>
+                  <TableView fx:id="waypointTableView" editable="true">
+                    <columns>
+                   		<TableColumn editable="false" prefWidth="75.0" sortable="false" text="WP">
+                   			<cellValueFactory>
+		                      <PropertyValueFactory property="name" />
+		                  </cellValueFactory>
+                   		</TableColumn>
+                      	<TableColumn fx:id="latTableColumn" editable="true" prefWidth="75.0" text="Lat">
+                   			<cellValueFactory>
+		                      <PropertyValueFactory property="lat" />
+		                  </cellValueFactory>
+                   		</TableColumn>
+                     	<TableColumn fx:id="lonTableColumn" editable="true" prefWidth="75.0" text="Lon">
+                   			<cellValueFactory>
+		                      <PropertyValueFactory property="lon" />
+		                  </cellValueFactory>
+		                </TableColumn>
+                    </columns>
+                  </TableView>
+					</children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+				</VBox>
+			</children>
+		</GridPane>
+	</children>
+</StackPane>

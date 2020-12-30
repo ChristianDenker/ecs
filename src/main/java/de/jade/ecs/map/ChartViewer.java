@@ -1,4 +1,4 @@
-package de.jade.ecs;
+package de.jade.ecs.map;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -52,6 +52,8 @@ public class ChartViewer implements ChartContext {
 	private ArrayList<Painter<JXMapViewer>> paintersList;
 	private CompoundPainter<JXMapViewer> painter;
 
+	private JFrame jFrame = null;
+
 	public JXMapViewer getJXMapViewer() {
 		return this.mapViewer;
 	}
@@ -84,12 +86,21 @@ public class ChartViewer implements ChartContext {
 		mapViewer.addMouseMotionListener(mia);
 		mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
 
+	}
+
+	public void show() {
 		// Display the viewer in a JFrame
-		JFrame frame = new JFrame("ChartViewer");
-		frame.getContentPane().add(mapViewer);
-		frame.setSize(800, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		if (jFrame == null) {
+			jFrame = new JFrame("ChartViewer");
+			jFrame.getContentPane().add(mapViewer);
+			jFrame.setSize(800, 600);
+			jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			jFrame.setVisible(true);
+		} else {
+			if (!jFrame.isVisible()) {
+				jFrame.setVisible(true);
+			}
+		}
 	}
 
 	public void addSeachart(S57map s57map) {

@@ -1,4 +1,4 @@
-package de.jade.ecs;
+package de.jade.ecs.map;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;

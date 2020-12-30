@@ -1,4 +1,4 @@
-package de.jade.ecs;
+package de.jade.ecs.map;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
