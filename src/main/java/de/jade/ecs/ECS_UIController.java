@@ -1,11 +1,16 @@
 package de.jade.ecs;
 
+import java.io.File;
+import java.io.IOException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import de.jade.ecs.map.ChartViewer;
+import de.jade.ecs.model.SettingsModel;
 import de.jade.ecs.route.RouteClickListener;
 import javafx.animation.TranslateTransition;
 import javafx.embed.swing.SwingNode;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -14,6 +19,10 @@ import javafx.util.Duration;
 
 public class ECS_UIController {
 
+	public static ECS_UIController INSTANCE = null;
+	
+	private SettingsModel settings = null;
+	
 	@FXML
 	private AnchorPane fullPane = null;
 
@@ -41,15 +50,19 @@ public class ECS_UIController {
 	 * Ctor
 	 */
 	public ECS_UIController() {
+		loadSettings();
+		INSTANCE = this;
 	}
 
 	@FXML
 	private void initialize() {
 		System.out.println(getClass().getName() + " initialized.");
+		
+		
 
 		createChartViewer();
 
-		/** prepare open & close animation **/
+		/** prepare open & close animation for menu **/
 		prepareSlideMenuAnimation();
 
 		/** make navPane resizable **/
@@ -57,6 +70,27 @@ public class ECS_UIController {
 	}
 	
 	
+
+	private void loadSettings() {
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			SettingsModel read = objectMapper.readValue(new File("settingsModel.json"), SettingsModel.class);
+			setSettings(read);
+			System.out.println("Settings loaded.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void saveSettings() {
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			objectMapper.writeValue(new File("settingsModel.json"), settings);
+			System.out.println("Settings saved.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void createChartViewer() {
 		swingNode = new SwingNode();
@@ -66,7 +100,7 @@ public class ECS_UIController {
 		RouteManagerController.INSTANCE.chartViewer = chartViewer;
 		
 		chartViewer.getJXMapViewer().addMouseListener(new RouteClickListener(chartViewer.getJXMapViewer()));
-
+		
 		mainStackPane.getChildren().add(swingNode);
 	}
 
@@ -84,9 +118,12 @@ public class ECS_UIController {
 		});
 	}
 
-	@FXML
-	public void buttonClicked(Event e) {
-		System.out.println("Button clicked");
+	public SettingsModel getSettings() {
+		return settings;
+	}
+
+	public void setSettings(SettingsModel settings) {
+		this.settings = settings;
 	}
 
 }

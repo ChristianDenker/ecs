@@ -20,8 +20,10 @@
 		<GridPane fx:id="routeOverviewGrid" prefHeight="194.0" prefWidth="200.0">
 
 			<columnConstraints>
-				<ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="50.0" prefWidth="50.0" />
-				<ColumnConstraints hgrow="ALWAYS" minWidth="50.0" prefWidth="150.0" />
+<!-- 				<ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="50.0" prefWidth="50.0" /> -->
+<!-- 				<ColumnConstraints hgrow="ALWAYS" minWidth="50.0" prefWidth="150.0" /> -->
+				<ColumnConstraints hgrow="SOMETIMES" maxWidth="153.0" minWidth="14.0" prefWidth="63.0" />
+				<ColumnConstraints hgrow="ALWAYS" maxWidth="1352.0" minWidth="10.0" prefWidth="1303.0" />
 			</columnConstraints>
 			<rowConstraints>
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -42,16 +44,17 @@
 		</GridPane>
 		<GridPane fx:id="routeCreateGrid">
 			<columnConstraints>
-				<ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="50.0" prefWidth="50.0" />
-				<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="150.0" />
+				<ColumnConstraints hgrow="SOMETIMES" maxWidth="153.0" minWidth="14.0" prefWidth="63.0" />
+				<ColumnConstraints hgrow="ALWAYS" maxWidth="1352.0" minWidth="10.0" prefWidth="1303.0" />
 			</columnConstraints>
 			<rowConstraints>
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
 			</rowConstraints>
 			<children>
-				<VBox alignment="BASELINE_CENTER" prefHeight="200.0" prefWidth="100.0">
+				<VBox alignment="BASELINE_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
 					<children>
 						<Button fx:id="saveRouteButton" mnemonicParsing="false" text="Save" />
+                  <Button fx:id="cancelRouteButton" mnemonicParsing="false" text="Cancel" />
 					</children>
 				</VBox>
 				<VBox spacing="5.0" GridPane.columnIndex="1" GridPane.valignment="TOP">
@@ -77,12 +80,12 @@
 		                      <PropertyValueFactory property="name" />
 		                  </cellValueFactory>
                    		</TableColumn>
-                      	<TableColumn fx:id="latTableColumn" editable="true" prefWidth="75.0" text="Lat">
+                      	<TableColumn fx:id="latTableColumn" editable="true" prefWidth="150.0" text="Lat">
                    			<cellValueFactory>
 		                      <PropertyValueFactory property="lat" />
 		                  </cellValueFactory>
                    		</TableColumn>
-                     	<TableColumn fx:id="lonTableColumn" editable="true" prefWidth="75.0" text="Lon">
+                     	<TableColumn fx:id="lonTableColumn" editable="true" prefWidth="150.0" text="Lon">
                    			<cellValueFactory>
 		                      <PropertyValueFactory property="lon" />
 		                  </cellValueFactory>

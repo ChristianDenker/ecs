@@ -12,7 +12,7 @@ import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import de.jade.ecs.RouteManagerController;
-import de.jade.ecs.routeModel.WaypointModel;
+import de.jade.ecs.model.route.WaypointModel;
 
 /**
  * RouteClickListener

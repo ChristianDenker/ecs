@@ -200,6 +200,32 @@ public class ChartViewer implements ChartContext {
 	}
 
 	/**
+	 * removes the given Painter from the paintersList
+	 * 
+	 * @param painter
+	 */
+	public void removePainter(Painter<JXMapViewer> painter) {
+		paintersList.remove(painter);
+		painter = new CompoundPainter<JXMapViewer>(paintersList);
+		mapViewer.setOverlayPainter(painter);
+		mapViewer.updateUI();
+	}
+
+	/**
+	 * adds a the {@link Painter} to the paintersList and returns it
+	 * 
+	 * @param geo
+	 * @return
+	 */
+	public Painter<JXMapViewer> addPainter(Painter<JXMapViewer> painter) {
+		paintersList.add(painter);
+		painter = new CompoundPainter<JXMapViewer>(paintersList);
+		mapViewer.setOverlayPainter(painter);
+		mapViewer.updateUI();
+		return painter;
+	}
+
+	/**
 	 * LinePainter
 	 * 
 	 * @author Martin Steiger

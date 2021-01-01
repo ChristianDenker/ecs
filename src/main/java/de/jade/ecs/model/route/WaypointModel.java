@@ -1,12 +1,16 @@
-package de.jade.ecs.routeModel;
+package de.jade.ecs.model.route;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class WaypointModel {
-	SimpleStringProperty name;
-	SimpleDoubleProperty lat;
-	SimpleDoubleProperty lon;
+	private SimpleStringProperty name = new SimpleStringProperty();
+	private SimpleDoubleProperty lat = new SimpleDoubleProperty();
+	private SimpleDoubleProperty lon = new SimpleDoubleProperty();
+
+	public WaypointModel() {
+		super();
+	}
 
 	public WaypointModel(String name, Double lat, Double lon) {
 		super();

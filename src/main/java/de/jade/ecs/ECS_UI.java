@@ -32,7 +32,7 @@ public class ECS_UI extends Application {
         
         ECS_UIController controllerRef = loader.getController();
 
-        System.out.println(controllerRef + " loaded.");
+        System.out.println(controllerRef + " loaded in "+ getClass().getName());
         
         applyMetroColorTheme(scene);
 	}
