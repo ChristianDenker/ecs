@@ -106,6 +106,8 @@ public class RouteManagerController {
 			}
 			ECS_UIController.INSTANCE.saveSettings();
 			chartViewer.removePainter(routeToEditPainter);
+			
+			routeListView.refresh();
 
 			isEditing = false;
 		});
