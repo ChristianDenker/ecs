@@ -6,6 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +16,8 @@ import java.util.List;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.painter.Painter;
 import org.jxmapviewer.viewer.GeoPosition;
+
+import de.jade.ecs.util.SVGUtils;
 
 /**
  * RoutePainter
@@ -25,6 +30,8 @@ public class RoutePainter implements Painter<JXMapViewer> {
 
 	private List<GeoPosition> track;
 
+	private BufferedImage RTEWPT03image = null;
+
 	/**
 	 * @param track the track
 	 */
@@ -32,6 +39,12 @@ public class RoutePainter implements Painter<JXMapViewer> {
 		// copy the list so that changes in the
 		// original list do not have an effect here
 		this.track = Collections.synchronizedList(new ArrayList<GeoPosition>(track));
+
+		try {
+			RTEWPT03image = SVGUtils.rasterize(new File("src/main/resources/s421/portrayal/Symbols/RTEWPT03.svg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -69,9 +82,13 @@ public class RoutePainter implements Painter<JXMapViewer> {
 				// convert geo-coordinate to world bitmap pixel
 				Point2D pt = map.getTileFactory().geoToPixel(gp, map.getZoom());
 
+				drawRTEWPT03(g, pt);
+
 				if (first) {
 					first = false;
 				} else {
+					g.setColor(new Color(227,128,57));
+					g.setStroke(new BasicStroke(0.64f,BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {10.0f}, 2.2f));
 					g.drawLine(lastX, lastY, (int) pt.getX(), (int) pt.getY());
 				}
 
@@ -79,6 +96,12 @@ public class RoutePainter implements Painter<JXMapViewer> {
 				lastY = (int) pt.getY();
 			}
 		}
+	}
+
+	private void drawRTEWPT03(Graphics2D g, Point2D point) {
+		int x = (int) point.getX() - RTEWPT03image.getWidth() / 2;
+		int y = (int) point.getY() - RTEWPT03image.getHeight() / 2;
+		g.drawImage(RTEWPT03image, x, y, null);
 	}
 
 	public List<GeoPosition> getTrack() {
