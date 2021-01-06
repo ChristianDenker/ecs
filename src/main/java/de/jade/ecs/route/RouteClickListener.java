@@ -2,7 +2,6 @@
 package de.jade.ecs.route;
 
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -47,11 +46,7 @@ public class RouteClickListener extends MouseAdapter {
         
 
         if ((left && singleClick && RouteManagerController.INSTANCE.isEditing)) {
-            Rectangle bounds = viewer.getViewportBounds();
-            int x = bounds.x + evt.getX();
-            int y = bounds.y + evt.getY();
-            Point pixelCoordinates = new Point(x, y);
-            mapClicked(viewer.getTileFactory().pixelToGeo(pixelCoordinates, viewer.getZoom()));
+        	mapClicked(viewer.convertPointToGeoPosition(new Point(evt.getX(), evt.getY())));
         }
     }
 

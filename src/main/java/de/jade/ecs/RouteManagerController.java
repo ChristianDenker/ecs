@@ -1,9 +1,5 @@
 package de.jade.ecs;
 
-import java.util.ArrayList;
-
-import org.jxmapviewer.viewer.GeoPosition;
-
 import de.jade.ecs.map.ChartViewer;
 import de.jade.ecs.map.RoutePainter;
 import de.jade.ecs.model.route.RouteModel;
@@ -155,10 +151,7 @@ public class RouteManagerController {
 	public void setupWaypoints() {
 		waypointTableView.setItems(routeToEdit.getWaypointList());
 		
-		ArrayList<GeoPosition> geoPositions = new ArrayList<GeoPosition>();
-		routeToEdit.getWaypointList().forEach((wpModel) -> geoPositions.add(new GeoPosition(wpModel.getLat(), wpModel.getLon())) );
-		
-		routeToEditPainter = new RoutePainter(geoPositions);
+		routeToEditPainter = new RoutePainter(routeToEdit.getWaypointList());
 		chartViewer.addPainter(routeToEditPainter);
 		
 		waypointTableView.getItems().addListener(new ListChangeListener<WaypointModel>() {
@@ -168,9 +161,7 @@ public class RouteManagerController {
 			@Override
 			public void onChanged(Change<? extends WaypointModel> c) {
 				routeToEditPainter.getTrack().clear();
-				ArrayList<GeoPosition> geoPositions = new ArrayList<GeoPosition>();
-				c.getList().forEach((wpModel) -> geoPositions.add(new GeoPosition(wpModel.getLat(), wpModel.getLon())) );
-				routeToEditPainter.getTrack().addAll(geoPositions);
+				routeToEditPainter.getTrack().addAll(c.getList());
 				chartViewer.getJXMapViewer().updateUI();
 			}
 		});

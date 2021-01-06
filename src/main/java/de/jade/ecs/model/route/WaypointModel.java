@@ -1,5 +1,8 @@
 package de.jade.ecs.model.route;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import de.jade.ecs.map.WaypointCanvas;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -7,6 +10,9 @@ public class WaypointModel {
 	private SimpleStringProperty name = new SimpleStringProperty();
 	private SimpleDoubleProperty lat = new SimpleDoubleProperty();
 	private SimpleDoubleProperty lon = new SimpleDoubleProperty();
+	
+	@JsonIgnore
+	public WaypointCanvas waypointCanvas = null;
 
 	public WaypointModel() {
 		super();

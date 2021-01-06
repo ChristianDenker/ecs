@@ -17,6 +17,8 @@ import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.painter.Painter;
 import org.jxmapviewer.viewer.GeoPosition;
 
+import de.jade.ecs.RouteManagerController;
+import de.jade.ecs.model.route.WaypointModel;
 import de.jade.ecs.util.SVGUtils;
 
 /**
@@ -26,25 +28,25 @@ import de.jade.ecs.util.SVGUtils;
  */
 public class RoutePainter implements Painter<JXMapViewer> {
 	private Color color = Color.YELLOW;
-	private boolean antiAlias = true;
+	private boolean antiAlias = false;
 
-	private List<GeoPosition> track;
+	private List<WaypointModel> track;
 
 	private BufferedImage RTEWPT03image = null;
 
 	/**
 	 * @param track the track
 	 */
-	public RoutePainter(List<GeoPosition> track) {
+	public RoutePainter(List<WaypointModel> track) {
 		// copy the list so that changes in the
 		// original list do not have an effect here
-		this.track = Collections.synchronizedList(new ArrayList<GeoPosition>(track));
-
+		this.track = Collections.synchronizedList(new ArrayList<WaypointModel>(track));
 		try {
 			RTEWPT03image = SVGUtils.rasterize(new File("src/main/resources/s421/portrayal/Symbols/RTEWPT03.svg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	@Override
@@ -77,34 +79,59 @@ public class RoutePainter implements Painter<JXMapViewer> {
 
 		boolean first = true;
 
-		synchronized (track) {
-			for (GeoPosition gp : track) {
-				// convert geo-coordinate to world bitmap pixel
-				Point2D pt = map.getTileFactory().geoToPixel(gp, map.getZoom());
+		/** draw waypoints **/
+		for (WaypointModel gp : track) {
 
-				drawRTEWPT03(g, pt);
+			// convert geo-coordinate to world bitmap pixel
+			Point2D pt = RouteManagerController.INSTANCE.chartViewer.getJXMapViewer()
+					.convertGeoPositionToPoint(new GeoPosition(gp.getLat(), gp.getLon()));
 
-				if (first) {
-					first = false;
-				} else {
-					g.setColor(new Color(227,128,57));
-					g.setStroke(new BasicStroke(0.64f,BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {10.0f}, 2.2f));
-					g.drawLine(lastX, lastY, (int) pt.getX(), (int) pt.getY());
-				}
+			drawRTEWPT03(g, pt, gp);
+		}
 
-				lastX = (int) pt.getX();
-				lastY = (int) pt.getY();
+		/** paint leg between waypoints **/
+		for (WaypointModel gp : track) {
+
+			Point2D pt = gp.waypointCanvas.getLocation();
+			Rectangle bounds = RouteManagerController.INSTANCE.chartViewer.getJXMapViewer().getViewportBounds();
+			int x = (int) (bounds.x + pt.getX() + gp.waypointCanvas.getWidth() / 2);
+			int y = (int) (bounds.y + pt.getY() + gp.waypointCanvas.getHeight() / 2);
+
+			if (first) {
+				first = false;
+			} else {
+
+				g.setColor(new Color(227, 128, 57));
+				g.setStroke(new BasicStroke(0.64f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1,
+						new float[] { 10.0f }, 2.2f));
+
+				g.drawLine(lastX, lastY, x, y);
 			}
+
+			lastX = x;
+			lastY = y;
 		}
 	}
 
-	private void drawRTEWPT03(Graphics2D g, Point2D point) {
-		int x = (int) point.getX() - RTEWPT03image.getWidth() / 2;
-		int y = (int) point.getY() - RTEWPT03image.getHeight() / 2;
-		g.drawImage(RTEWPT03image, x, y, null);
+	private void drawRTEWPT03(Graphics2D g, Point2D point, WaypointModel waypointModel) {
+
+		int buttonX = (int) (point.getX() - RTEWPT03image.getWidth() / 2);
+		int buttonY = (int) (point.getY() - RTEWPT03image.getHeight() / 2);
+
+		if (waypointModel.waypointCanvas == null) {
+			waypointModel.waypointCanvas = new WaypointCanvas(waypointModel);
+
+			RouteManagerController.INSTANCE.chartViewer.getJXMapViewer().add(waypointModel.waypointCanvas);
+			waypointModel.waypointCanvas.setLocation(buttonX, buttonY);
+
+		} else {
+			waypointModel.waypointCanvas.setLocation(buttonX, buttonY);
+			waypointModel.waypointCanvas.movingAdapter.startPoint = waypointModel.waypointCanvas.getLocation(); // resets startPosition
+		}
+
 	}
 
-	public List<GeoPosition> getTrack() {
+	public List<WaypointModel> getTrack() {
 		return track;
 	}
 

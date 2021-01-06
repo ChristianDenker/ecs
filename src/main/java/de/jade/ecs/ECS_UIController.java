@@ -96,7 +96,9 @@ public class ECS_UIController {
 		swingNode = new SwingNode();
 
 		chartViewer = new ChartViewer();
+
 		swingNode.setContent(chartViewer.getJXMapViewer());
+
 		RouteManagerController.INSTANCE.chartViewer = chartViewer;
 		
 		chartViewer.getJXMapViewer().addMouseListener(new RouteClickListener(chartViewer.getJXMapViewer()));

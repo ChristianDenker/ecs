@@ -21,6 +21,7 @@ public class DragResizer {
 	private double x;
 
 	private boolean initMinHeight;
+	@SuppressWarnings("unused")
 	private boolean initMinWidth;
 	private boolean moving;
 	private boolean dragging;
