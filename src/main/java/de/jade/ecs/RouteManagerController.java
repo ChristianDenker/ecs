@@ -6,11 +6,13 @@ import de.jade.ecs.model.route.RouteModel;
 import de.jade.ecs.model.route.WaypointModel;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -30,7 +32,7 @@ public class RouteManagerController {
 	public boolean isEditing = false;
 
 	public RouteModel routeToEdit = null;
-	
+
 	public RoutePainter routeToEditPainter = null;
 
 	@FXML
@@ -81,8 +83,6 @@ public class RouteManagerController {
 
 		setupRouteOverview();
 
-
-
 		setupRouteCreateMenu();
 
 		/** style **/
@@ -97,12 +97,22 @@ public class RouteManagerController {
 			routeOverviewGrid.toFront();
 
 			routeToEdit.setName(routeName.getText());
-			if(!ECS_UIController.INSTANCE.getSettings().getRouteModelList().contains(routeToEdit)) {
+			if (!ECS_UIController.INSTANCE.getSettings().getRouteModelList().contains(routeToEdit)) {
 				ECS_UIController.INSTANCE.getSettings().getRouteModelList().add(routeToEdit);
 			}
 			ECS_UIController.INSTANCE.saveSettings();
+
+			/**
+			 * remove WPTs from JXMapViewer and set waypointCanvas-Reference in
+			 * WaypointModel to null
+			 **/
+			routeToEditPainter.getTrack().forEach(wpModel -> {
+				chartViewer.getJXMapViewer().remove(wpModel.waypointCanvas);
+				wpModel.waypointCanvas = null;
+			});
+
 			chartViewer.removePainter(routeToEditPainter);
-			
+
 			routeListView.refresh();
 
 			isEditing = false;
@@ -110,13 +120,56 @@ public class RouteManagerController {
 
 		cancelRouteButton.setOnAction((ActionEvent evt) -> {
 			routeOverviewGrid.toFront();
+			/**
+			 * remove WPTs from JXMapViewer and set waypointCanvas-Reference in
+			 * WaypointModel to null
+			 **/
+			routeToEditPainter.getTrack().forEach(wpModel -> {
+				chartViewer.getJXMapViewer().remove(wpModel.waypointCanvas);
+				wpModel.waypointCanvas = null;
+			});
 			chartViewer.removePainter(routeToEditPainter);
 			isEditing = false;
 		});
 
 		latTableColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+		latTableColumn.addEventHandler(TableColumn.editCommitEvent(),
+				new EventHandler<CellEditEvent<String, Double>>() {
+					/**
+					 * This updates manual inputs entered into waypointTableView
+					 */
+					@Override
+					public void handle(CellEditEvent<String, Double> event) {
+						for (Object item : event.getTableView().getItems()) {
+							WaypointModel wpModel = (WaypointModel) item;
+							if (wpModel.getLat().equals(event.getOldValue())) {
+								wpModel.setLat(event.getNewValue());
+								chartViewer.getJXMapViewer().updateUI();
+								break;
+							}
+						}
+					}
+				});
+		
 		lonTableColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
-
+		lonTableColumn.addEventHandler(TableColumn.editCommitEvent(),
+				new EventHandler<CellEditEvent<String, Double>>() {
+					/**
+					 * This updates manual inputs entered into waypointTableView
+					 */
+					@Override
+					public void handle(CellEditEvent<String, Double> event) {
+						for (Object item : event.getTableView().getItems()) {
+							WaypointModel wpModel = (WaypointModel) item;
+							if (wpModel.getLon().equals(event.getOldValue())) {
+								wpModel.setLon(event.getNewValue());
+								chartViewer.getJXMapViewer().updateUI();
+								break;
+							}
+						}
+					}
+				});
+	
 //		ObservableList<WaypointModel> waypointList = FXCollections.observableArrayList();
 //		waypointList.add(new WaypointModel("WP1", 54.0, 8.0));
 //		waypointTableView.setItems(waypointList);
@@ -131,12 +184,12 @@ public class RouteManagerController {
 
 			routeName.setText("");
 			routeToEdit = new RouteModel();
-			
+
 			setupWaypoints();
 
 			isEditing = true;
 		});
-		
+
 		/** setup route ListView **/
 		routeListView.setCellFactory(new Callback<ListView<RouteModel>, ListCell<RouteModel>>() {
 			@Override
@@ -150,14 +203,14 @@ public class RouteManagerController {
 
 	public void setupWaypoints() {
 		waypointTableView.setItems(routeToEdit.getWaypointList());
-		
+
 		routeToEditPainter = new RoutePainter(routeToEdit.getWaypointList());
 		chartViewer.addPainter(routeToEditPainter);
-		
+
 		waypointTableView.getItems().addListener(new ListChangeListener<WaypointModel>() {
 
 			/** update Route on RoutePainter **/
-			
+
 			@Override
 			public void onChanged(Change<? extends WaypointModel> c) {
 				routeToEditPainter.getTrack().clear();
@@ -165,7 +218,7 @@ public class RouteManagerController {
 				chartViewer.getJXMapViewer().updateUI();
 			}
 		});
-		
+
 		chartViewer.getJXMapViewer().updateUI();
 	}
 }
