@@ -1,5 +1,11 @@
 package de.jade.ecs;
 
+import java.util.Iterator;
+
+import org.apache.commons.collections4.queue.CircularFifoQueue;
+import org.apache.sis.referencing.CommonCRS;
+import org.apache.sis.referencing.GeodeticCalculator;
+
 import de.jade.ecs.map.ChartViewer;
 import de.jade.ecs.map.RoutePainter;
 import de.jade.ecs.model.route.RouteModel;
@@ -34,6 +40,8 @@ public class RouteManagerController {
 	public RouteModel routeToEdit = null;
 
 	public RoutePainter routeToEditPainter = null;
+
+	public GeodeticCalculator geodeticCalculator = GeodeticCalculator.create(CommonCRS.WGS84.geographic());
 
 	@FXML
 	private ListView<RouteModel> routeListView = null;
@@ -150,7 +158,7 @@ public class RouteManagerController {
 						}
 					}
 				});
-		
+
 		lonTableColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
 		lonTableColumn.addEventHandler(TableColumn.editCommitEvent(),
 				new EventHandler<CellEditEvent<String, Double>>() {
@@ -169,7 +177,7 @@ public class RouteManagerController {
 						}
 					}
 				});
-	
+
 //		ObservableList<WaypointModel> waypointList = FXCollections.observableArrayList();
 //		waypointList.add(new WaypointModel("WP1", 54.0, 8.0));
 //		waypointTableView.setItems(waypointList);
@@ -219,6 +227,21 @@ public class RouteManagerController {
 			}
 		});
 
+		/** setup transition points **/
+		{
+			if (waypointTableView.getItems().size() > 2) {
+				CircularFifoQueue<WaypointModel> fifoQueue = new CircularFifoQueue<>(3);
+				Iterator<WaypointModel> wpIterator = waypointTableView.getItems().iterator();
+				fifoQueue.add(wpIterator.next());
+				fifoQueue.add(wpIterator.next());
+
+				while (wpIterator.hasNext()) {
+					fifoQueue.add(wpIterator.next());
+					fifoQueue.get(1).updateTransitionPoints(fifoQueue.get(0), fifoQueue.get(2));
+				}
+			}
+		}
+		
 		chartViewer.getJXMapViewer().updateUI();
 	}
 }

@@ -20,6 +20,9 @@ public class SettingsModel {
 
 	public SettingsModel() {
 		super();
+		if(routeModelList.get() == null) {
+			routeModelList.set(FXCollections.observableArrayList());
+		}
 	}
 
 	public SettingsModel(ObservableList<RouteModel> routeModelList) {
