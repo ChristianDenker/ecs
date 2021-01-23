@@ -76,6 +76,9 @@ public class RouteManagerController {
 	@FXML
 	private TableColumn<String, Double> lonTableColumn = null;
 
+	@FXML
+	private TableColumn<String, Double> radiusTableColumn = null;
+
 	/**
 	 * Ctor
 	 */
@@ -148,13 +151,13 @@ public class RouteManagerController {
 					 */
 					@Override
 					public void handle(CellEditEvent<String, Double> event) {
-						for (Object item : event.getTableView().getItems()) {
-							WaypointModel wpModel = (WaypointModel) item;
-							if (wpModel.getLat().equals(event.getOldValue())) {
-								wpModel.setLat(event.getNewValue());
-								chartViewer.getJXMapViewer().updateUI();
-								break;
-							}
+						WaypointModel wpModel = (WaypointModel) RouteManagerController.INSTANCE.waypointTableView
+								.getItems().get(event.getTablePosition().getRow());
+						if (wpModel != null) {
+							wpModel.setLat(event.getNewValue());
+							wpModel.updateTransitionPoints(
+									RouteManagerController.INSTANCE.waypointTableView.getItems());
+							chartViewer.getJXMapViewer().updateUI();
 						}
 					}
 				});
@@ -167,13 +170,32 @@ public class RouteManagerController {
 					 */
 					@Override
 					public void handle(CellEditEvent<String, Double> event) {
-						for (Object item : event.getTableView().getItems()) {
-							WaypointModel wpModel = (WaypointModel) item;
-							if (wpModel.getLon().equals(event.getOldValue())) {
-								wpModel.setLon(event.getNewValue());
-								chartViewer.getJXMapViewer().updateUI();
-								break;
-							}
+						WaypointModel wpModel = (WaypointModel) RouteManagerController.INSTANCE.waypointTableView
+								.getItems().get(event.getTablePosition().getRow());
+						if (wpModel != null) {
+							wpModel.setLon(event.getNewValue());
+							wpModel.updateTransitionPoints(
+									RouteManagerController.INSTANCE.waypointTableView.getItems());
+							chartViewer.getJXMapViewer().updateUI();
+						}
+					}
+				});
+
+		radiusTableColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+		radiusTableColumn.addEventHandler(TableColumn.editCommitEvent(),
+				new EventHandler<CellEditEvent<String, Double>>() {
+					/**
+					 * This updates manual inputs entered into waypointTableView
+					 */
+					@Override
+					public void handle(CellEditEvent<String, Double> event) {
+						WaypointModel wpModel = (WaypointModel) RouteManagerController.INSTANCE.waypointTableView
+								.getItems().get(event.getTablePosition().getRow());
+						if (wpModel != null) {
+							wpModel.setTurnRadius_meters(event.getNewValue());
+							wpModel.updateTransitionPoints(
+									RouteManagerController.INSTANCE.waypointTableView.getItems());
+							chartViewer.getJXMapViewer().updateUI();
 						}
 					}
 				});
@@ -241,7 +263,7 @@ public class RouteManagerController {
 				}
 			}
 		}
-		
+
 		chartViewer.getJXMapViewer().updateUI();
 	}
 }

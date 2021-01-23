@@ -28,9 +28,12 @@ import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.Waypoint;
 import org.jxmapviewer.viewer.WaypointPainter;
+import org.jxmapviewer.viewer.wms.WMSService;
+import org.jxmapviewer.viewer.wms.WMSTileFactory;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 
+import de.jade.ecs.util.WMSServiceImagePNG;
 import render.ChartContext;
 import s57.S57map;
 import s57.S57map.Feature;
@@ -63,10 +66,18 @@ public class ChartViewer implements ChartContext {
 	 */
 	public ChartViewer() {
 		mapViewer = new JXMapViewer();
-
+		// https://seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/encdirect
+//		WMSService wms = new WMSService("https://seamlessrnc.nauticalcharts.noaa.gov/arcgis/services/RNC/NOAA_RNC/MapServer/WmsServer?", "1");//"OSM-WMS");
+//		WMSTileFactory tileFactory = new WMSTileFactory(wms);
+		
+		WMSServiceImagePNG wms = new WMSServiceImagePNG("https://wms.sevencs.com/?SERVICE=WMS&CSBOOL=183&CSVALUE=10,5,15,10,1,2,1,,,,1&", "ENC");//"OSM-WMS");
+		WMSTileFactory tileFactory = new WMSTileFactory(wms);
+		tileFactory.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36");
+		
+		
 		// Create a TileFactoryInfo for OpenStreetMap
-		TileFactoryInfo info = new OSMTileFactoryInfo();
-		DefaultTileFactory tileFactory = new DefaultTileFactory(info);
+//		TileFactoryInfo info = new OSMTileFactoryInfo();
+//		DefaultTileFactory tileFactory = new DefaultTileFactory(info);
 		mapViewer.setTileFactory(tileFactory);
 
 		// Use 8 threads in parallel to load the tiles

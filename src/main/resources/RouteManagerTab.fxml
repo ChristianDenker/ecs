@@ -90,6 +90,11 @@
 		                      <PropertyValueFactory property="lon" />
 		                  </cellValueFactory>
 		                </TableColumn>
+		                <TableColumn fx:id="radiusTableColumn" editable="true" prefWidth="150.0" text="radius (m)">
+                   			<cellValueFactory>
+		                      <PropertyValueFactory property="turnRadius_meters" />
+		                  </cellValueFactory>
+		                </TableColumn>
                     </columns>
                   </TableView>
 					</children>

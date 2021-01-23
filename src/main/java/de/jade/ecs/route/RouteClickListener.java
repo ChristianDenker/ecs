@@ -60,23 +60,6 @@ public class RouteClickListener extends MouseAdapter {
 		RouteManagerController.INSTANCE.waypointTableView.getItems().add(waypointModel);
 
 		/** update transition points **/
-		{
-			int waypointModelIndex = RouteManagerController.INSTANCE.waypointTableView.getItems()
-					.indexOf(waypointModel);
-
-			int predecessorIndex = (waypointModelIndex == 0) ? -1 : waypointModelIndex - 1; // can result in -2
-			int pre_predecessorIndex = (predecessorIndex == 0) ? -1 : predecessorIndex - 1;
-
-			WaypointModel pre_predecessorWpModel = null;
-			if (pre_predecessorIndex > -1) {
-				pre_predecessorWpModel = RouteManagerController.INSTANCE.waypointTableView.getItems()
-						.get(pre_predecessorIndex);
-			}
-			WaypointModel predecessorWpModel = null;
-			if (predecessorIndex > -1) {
-				predecessorWpModel = RouteManagerController.INSTANCE.waypointTableView.getItems().get(predecessorIndex);
-			}
-			predecessorWpModel.updateTransitionPoints(pre_predecessorWpModel, waypointModel);
-		}
+		waypointModel.updateTransitionPoints(RouteManagerController.INSTANCE.waypointTableView.getItems());
 	}
 }

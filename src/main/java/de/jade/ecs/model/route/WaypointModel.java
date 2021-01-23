@@ -9,6 +9,7 @@ import de.jade.ecs.RouteManagerController;
 import de.jade.ecs.map.WaypointCanvas;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 
 public class WaypointModel {
 	private SimpleStringProperty name = new SimpleStringProperty();
@@ -173,6 +174,50 @@ public class WaypointModel {
 		circleCenterBearingToPointToSuccessor = (geoCalc.getStartingAzimuth() + 360) % 360;
 	}
 
+	/** updateTransitionPoints
+	 * 
+	 * updates transition points of this' and waypointModel predecessors and successors
+	 * 
+	 * @param wayPointModelList
+	 */
+	@JsonIgnore
+	public void updateTransitionPoints(ObservableList<WaypointModel> wayPointModelList){
+		int waypointModelIndex = wayPointModelList.indexOf(this);
+
+		int predecessorIndex = (waypointModelIndex == 0) ? -1 : waypointModelIndex - 1; // can result in -2
+		int pre_predecessorIndex = (predecessorIndex == 0) ? -1 : predecessorIndex - 1;
+		int successorIndex = (waypointModelIndex == wayPointModelList
+				.size() - 1) ? -1 : waypointModelIndex + 1;
+		int post_successorIndex = (successorIndex == wayPointModelList.size() - 1) ? -1 : successorIndex + 1;
+
+		WaypointModel pre_predecessorWpModel = null;
+		if (pre_predecessorIndex > -1) {
+			pre_predecessorWpModel = wayPointModelList
+					.get(pre_predecessorIndex);
+		}
+		WaypointModel predecessorWpModel = null;
+		if (predecessorIndex > -1) {
+			predecessorWpModel = wayPointModelList
+					.get(predecessorIndex);
+		}
+		WaypointModel successorWpModel = null;
+		if (successorIndex > -1) {
+			successorWpModel = wayPointModelList.get(successorIndex);
+		}
+		WaypointModel post_successorWpModel = null;
+		if (post_successorIndex > -1) {
+			post_successorWpModel = wayPointModelList
+					.get(post_successorIndex);
+		}
+		
+		this.updateTransitionPoints(predecessorWpModel, successorWpModel);
+		if (predecessorWpModel != null)
+			predecessorWpModel.updateTransitionPoints(pre_predecessorWpModel, this);
+		if (successorWpModel != null)
+			successorWpModel.updateTransitionPoints(this, post_successorWpModel);
+		
+	}
+	
 	/**
 	 * returns cartesian coordinates from given polar coordinates
 	 * 
