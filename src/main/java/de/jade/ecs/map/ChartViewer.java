@@ -17,18 +17,14 @@ import javax.swing.JFrame;
 import javax.swing.event.MouseInputListener;
 
 import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
 import org.jxmapviewer.painter.CompoundPainter;
 import org.jxmapviewer.painter.Painter;
-import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.Waypoint;
 import org.jxmapviewer.viewer.WaypointPainter;
-import org.jxmapviewer.viewer.wms.WMSService;
 import org.jxmapviewer.viewer.wms.WMSTileFactory;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
@@ -256,6 +252,16 @@ public class ChartViewer implements ChartContext {
 			// original list do not have an effect here
 			this.track = Collections.synchronizedList(new ArrayList<GeoPosition>(track));
 		}
+		
+		
+		/**
+		 * 
+		 * @return - the track list
+		 */
+		public List<GeoPosition> getTrack() {
+			return track;
+		}
+
 
 		@Override
 		public void paint(Graphics2D g, JXMapViewer map, int w, int h) {

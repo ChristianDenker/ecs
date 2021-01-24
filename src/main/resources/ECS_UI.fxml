@@ -47,7 +47,11 @@
 										<fx:include fx:id="routeManagerTab" source="RouteManagerTab.fxml"/> 
 									</content>
 								</Tab>
-								<Tab text="Untitled Tab 2" />
+								<Tab text="Simulation (experimental)">
+									<content>
+										<fx:include fx:id="simulationTab" source="SimulationTab.fxml"/> 
+									</content>
+								</Tab>
 							</tabs>
 
 						</TabPane>

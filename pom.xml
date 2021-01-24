@@ -20,6 +20,13 @@
 		<javafx.version>13</javafx.version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 
 		<dependency>
@@ -122,7 +129,14 @@
 		<!-- </dependency> -->
 
 
-
+		<dependency>
+<!-- 			<groupId>com.github.ChristianDenker</groupId> -->
+<!-- 			<artifactId>simulator</artifactId> -->
+<!-- 			<version>d158a8b</version> -->
+			<groupId>de.jade</groupId>
+			<artifactId>simulator</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 
 
