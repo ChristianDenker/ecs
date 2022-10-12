@@ -114,6 +114,8 @@ public class SimulationController {
 
 				LOSTrackingBehaviour trackBehaviour = new LOSTrackingBehaviour(shipStateA, losRadius,
 						routeToTrackChoiceBox.getSelectionModel().getSelectedItem());
+				
+				ManoeuvreOptimizer manOp = new ManoeuvreOptimizer(routeToTrackChoiceBox.getSelectionModel().getSelectedItem());
 
 				trackPaintExecution = new TrackPaintExecution(chartViewer, shipStateA);
 

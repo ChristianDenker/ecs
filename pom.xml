@@ -130,14 +130,19 @@
 
 
 		<dependency>
-<!-- 			<groupId>com.github.ChristianDenker</groupId> -->
-<!-- 			<artifactId>simulator</artifactId> -->
-<!-- 			<version>d158a8b</version> -->
+			<!-- <groupId>com.github.ChristianDenker</groupId> -->
+			<!-- <artifactId>simulator</artifactId> -->
+			<!-- <version>d158a8b</version> -->
 			<groupId>de.jade</groupId>
 			<artifactId>simulator</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.aparapi</groupId>
+			<artifactId>aparapi</artifactId>
+			<version>2.0.1-SNAPSHOT</version>
+		</dependency>
 
 
 	</dependencies>
