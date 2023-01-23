@@ -38,13 +38,17 @@ public class ECS_UIController {
 	@FXML
 	private AnchorPane navPane = null;
 	
-	private ChartViewer chartViewer = null;
+	public static ChartViewer chartViewer = null;
 	
 	@FXML
 	private StackPane routeManagerTab = null;
 	
 	@FXML
 	private RouteManagerController routeManagerController = null;
+	
+	
+	@FXML
+	private StackPane mapPropertiesTab = null;
 
 	/**
 	 * Ctor

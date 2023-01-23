@@ -52,6 +52,11 @@
 										<fx:include fx:id="simulationTab" source="SimulationTab.fxml"/> 
 									</content>
 								</Tab>
+								<Tab text="Map Properties">
+									<content>
+										<fx:include fx:id="mapPropertiesTab" source="MapPropertiesTab.fxml"/> 
+									</content>
+								</Tab>
 							</tabs>
 
 						</TabPane>

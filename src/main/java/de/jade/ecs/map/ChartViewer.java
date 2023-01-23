@@ -67,11 +67,15 @@ public class ChartViewer implements ChartContext {
 //		WMSTileFactory tileFactory = new WMSTileFactory(wms);
 		
 		WMSServiceImagePNG wms = new WMSServiceImagePNG("https://wms.sevencs.com/?SERVICE=WMS&CSBOOL=183&CSVALUE=10,5,15,10,1,2,1,,,,1&", "ENC");//"OSM-WMS");
+//		WMSServiceImagePNG wms = new WMSServiceImagePNG("https://ows.terrestris.de/osm/service?SERVICE=WMS&REQUEST=GetMap&CRS=EPSG:3857&", "OSM-Overlay-WMS");//"OSM-WMS");
+//		WMSServiceImagePNG wms = new WMSServiceImagePNG("https://ch-osm-services.geodatasolutions.ch/geoserver/ows?service=wms&version=1.3.0&REQUEST=GetMap&CRS=EPSG:3857&", "magosm:ALL");//"OSM-WMS");
+		
+		
 		WMSTileFactory tileFactory = new WMSTileFactory(wms);
 		tileFactory.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36");
 		
 		
-		// Create a TileFactoryInfo for OpenStreetMap
+//		// Create a TileFactoryInfo for OpenStreetMap
 //		TileFactoryInfo info = new OSMTileFactoryInfo();
 //		DefaultTileFactory tileFactory = new DefaultTileFactory(info);
 		mapViewer.setTileFactory(tileFactory);

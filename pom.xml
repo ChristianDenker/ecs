@@ -16,6 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.release>11</maven.compiler.release>
 		<maven.compiler.target>11</maven.compiler.target>
 		<javafx.version>13</javafx.version>
 	</properties>
@@ -63,12 +64,17 @@
 		</dependency>
 
 		<dependency>
-			<groupId>de.jade</groupId>
+			<groupId>com.github.ChristianDenker</groupId>
 			<artifactId>s57reader</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>33f0dd018f</version>
 		</dependency>
 
 
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-base</artifactId>
+			<version>${javafx.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
@@ -82,6 +88,11 @@
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-swing</artifactId>
+			<version>${javafx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-graphics</artifactId>
 			<version>${javafx.version}</version>
 		</dependency>
 
@@ -130,19 +141,19 @@
 
 
 		<dependency>
-			<!-- <groupId>com.github.ChristianDenker</groupId> -->
-			<!-- <artifactId>simulator</artifactId> -->
-			<!-- <version>d158a8b</version> -->
-			<groupId>de.jade</groupId>
+			<groupId>com.github.ChristianDenker</groupId>
 			<artifactId>simulator</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>-SNAPSHOT</version>
+<!-- 			<groupId>de.jade</groupId> -->
+<!-- 			<artifactId>simulator</artifactId> -->
+<!-- 			<version>0.0.1-SNAPSHOT</version> -->
 		</dependency>
 
-		<dependency>
-			<groupId>com.aparapi</groupId>
-			<artifactId>aparapi</artifactId>
-			<version>2.0.1-SNAPSHOT</version>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>com.aparapi</groupId> -->
+		<!-- <artifactId>aparapi</artifactId> -->
+		<!-- <version>2.0.1-SNAPSHOT</version> -->
+		<!-- </dependency> -->
 
 
 	</dependencies>
